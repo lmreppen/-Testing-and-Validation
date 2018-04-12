@@ -1,53 +1,72 @@
 package StvPackage;
 
-
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import java.util.UUID;
+class InvalidOperationException extends Exception { }
+class InvalidNumberPhoneException extends Exception { }
 
-public class Client {
-	
-	
-	UUID number;
+public class  Client {
 	String name;
-	ArrayList<String> phoneNumbers;
-	ArrayList<String> clientPhones;
-	ArrayList<String> clientsFriends;
-	
-	public Client() {
-		
-	}
-	
-	public UUID getUUID() {
-		
-		return number;
-		
-	}
-	
-	public String getClientsName() {
-		return name;
-	}
-	
-	public ArrayList<String> getPhoneNumbers() throws Exception {
-		if(phoneNumbers.size() > 0 && phoneNumbers.size() < 5) {
-			return phoneNumbers;
-		}
-		
-		throw new Exception("whateves");
-	}
-	
-	public ArrayList<String> getClientsPhones() throws Exception{
-		if(clientPhones.size() == phoneNumbers.size()) {
-			return clientPhones;
-		}
-		throw new Exception("this");
+	Integer nif;
+	Integer phoneNumber;
+	Set<Integer> phoneNumbers = new HashSet<Integer>();
+	Set<Integer> friends = new HashSet<Integer>();
+
+	Client(String name, int nif, int phoneNumber) {
+		this.name = name;
+		this.nif = nif;
+		this.phoneNumbers.add(phoneNumber);
 	}
 
-	
-	public ArrayList<String> getClientsFriends() throws Exception{
-		if(clientsFriends.size() <= 3* phoneNumbers.size() ) {
-			return clientsFriends;
+	// Management of the phone numbers of this client
+	void addPhoneNumber(int phoneNumber) throws InvalidOperationException {
+		if (this.phoneNumbers.size() >= 5) {
+			throw new InvalidOperationException();
 		}
-		throw new Exception("");
+		
+		if (!this.phoneNumbers.add(phoneNumber)) {
+			throw new InvalidOperationException();
+		}
+	}
+
+	void removePhoneNumber(int phoneNumber) throws InvalidOperationException {
+		if (this.phoneNumbers.size() <= 1) {
+			throw new InvalidOperationException();
+		}
+
+		if (!this.phoneNumbers.remove(phoneNumber)) {
+			throw new InvalidOperationException();
+		}
+	}
+
+	// returns the phone numbers assigned to this client.
+	public List<Integer> getPhoneNumbers() {
+		return new ArrayList<Integer>(this.phoneNumbers);
+	}
+
+	// returns name of client
+	public String getName() {
+		return this.name;
+	}
+
+	// return list of registered friends
+	public List<Integer> getFriends() {
+		return new ArrayList<Integer>(this.friends);
+	}
+
+	// friends management
+	public void addFriend(int phoneNumber) throws InvalidNumberPhoneException {
+		if (this.friends.size() + 1 >= this.phoneNumbers.size() * 3 + 1) {
+			throw new InvalidNumberPhoneException();
+		}
+	}
+
+	public void removeFriend(int phoneNumber) throws InvalidOperationException {
+		if (!this.friends.remove(phoneNumber)) {
+			throw new InvalidOperationException();
+		}
 	}
 }
