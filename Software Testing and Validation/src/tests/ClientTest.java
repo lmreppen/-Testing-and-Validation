@@ -1,11 +1,14 @@
 package tests;
 
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import exceptions.DuplicateNIFException;
 import exceptions.InvalidOperationException;
 import impl.Client;
+import impl.Mobile;
 
 
 /*5. Implementation of six test cases concerning the test 
@@ -70,19 +73,26 @@ public class ClientTest extends Assert {
 		} catch (InvalidOperationException e) { }
 	}
 	
-	@Test(description = " TestCase 9, Length == length, clientsPhoneNumbers")
-	
-	
-	public void fifthTestCase() {
-				
-				//arrange
+	@Test(description = " TestCase 9, Clients number of phoneNumbers, should be equal to amount of Mobile Phones the client have")
+	public void testNumberOfPhonesAgainstMobiles() throws DuplicateNIFException, InvalidOperationException{
+		int phoneNumber= 12345678;
+		int phoneNumber2= 123123124;
+		Client client = new Client("Bjarte",123123123,phoneNumber);
+		Client client1 = new Client("Bjarte",123123133,phoneNumber2);
 		
-				//act
-				
-				
-				//assert
+		
+		try {
+			client.registerMobile(phoneNumber);
+			client.addPhoneNumber(phoneNumber);
+		assertTrue(client.getMobiles().size() == client.getPhoneNumbers().size());
+		
+		fail("must be same amount of PhoneNumbers as mobiles");
+		
+		
+		}catch(InvalidOperationException e) {
+			
+		}
 	}
-
 	@Test(description = "Test case 11: maximum number of friends should be three times the number of phone numbers plus five")
 	public void testMaxNumberOfFriends() throws InvalidOperationException, InvalidOperationException, DuplicateNIFException {
 		// Arrange
