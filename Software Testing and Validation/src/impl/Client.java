@@ -7,18 +7,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import exceptions.DuplicateNIFException;
 import exceptions.InvalidOperationException;
 
 public class  Client {
+	static Set<Integer> nifs = new HashSet<Integer>();
+
 	String name;
 	Integer nif;
 	Set<Integer> phoneNumbers = new HashSet<Integer>();
 	Set<Integer> friends = new HashSet<Integer>();
 	Map<Integer, Mobile> mobiles = new HashMap<Integer, Mobile>();
 
-	public Client(String name, int nif, int phoneNumber) {
+	public Client(String name, int nif, int phoneNumber) throws DuplicateNIFException {
 		if (name.length() < 5) {
 			throw new IllegalArgumentException("Name too short");
+		}
+		
+		if (!nifs.add(nif)) {
+			throw new DuplicateNIFException();
 		}
 
 		this.name = name;
