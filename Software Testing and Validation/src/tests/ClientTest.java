@@ -17,14 +17,38 @@ public class ClientTest extends Assert {
 
 	@Test(description = "Test case 1: minimum lenght of name" )
 	public void testMinLengthOfName() {
+		Client client = new Client("timminy", 28239873, 29727822);
 		// Act
 		try {
-			new Client("tim", 28239873, 29727822);
+			//Client client = new Client("tim", 28239873, 29727822);
 			
-			// Assert
+			//assert
+			assertTrue(client.getName().length() >= 5);
+			
+			
+			//fail("A name of length less than five should not be admissible");
+		} catch (IllegalArgumentException e) {
 			fail("A name of length less than five should not be admissible");
-		} catch (IllegalArgumentException e) { }
+		}
 	}
+	
+	
+	@Test (description = " TestCase 3, uniqe Id")
+	public void testUniqueId() throws InvalidOperationException{
+			Client client = new Client("NameName",123123515,123456789);
+			Client client1 = new Client("NameName",123123515,123456789);
+			Client client2 = new Client("NameName",123123517,123456789);
+		try {
+			
+			assertSame("This NIF number is the same", client.equals(client1));
+			
+		}catch(IllegalArgumentException e) {
+			fail("this Uniqe Id already exist");
+		}
+		
+	}
+	
+	
 
 	@Test(description = "Test case 7: maximum number of phone numbers")
 	public void testMaxNumberOfPhoneNumbers() throws InvalidOperationException {
@@ -38,8 +62,11 @@ public class ClientTest extends Assert {
 			client.addPhoneNumber(82098221);
 			
 			// Assert
+			assertTrue(client.getMobiles().size() <= 5);
+			
+		} catch (InvalidOperationException e) {
 			fail("Maximum number of phone numbers should be five");
-		} catch (InvalidOperationException e) { }
+		}
 	}
 
 	@Test(description = "Test case 5, minimum number of phone numbers")
@@ -53,11 +80,16 @@ public class ClientTest extends Assert {
 			client.removePhoneNumber(phoneNumber);
 			
 			// Assert
+			assertTrue(client.getMobiles().size() >=1);
+			//fail("Last phone number should not be removable");
+		} catch (InvalidOperationException e) {
 			fail("Last phone number should not be removable");
-		} catch (InvalidOperationException e) { }
+		}
 	}
 	
 	@Test(description = " TestCase 9, Length == length, clientsPhoneNumbers")
+	
+	
 	public void fifthTestCase() {
 				
 				//arrange
